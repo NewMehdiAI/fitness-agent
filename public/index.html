@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>داشبورد مشاور ورزشی</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>داشبورد مشاور ورزشی</h1>
+
+  <!-- نمایش اطلاعات کاربر -->
+  <div class="card" id="user-info">
+    <h2>اطلاعات کاربر</h2>
+    <p><strong>نام:</strong> <span id="name"></span></p>
+    <p><strong>هدف:</strong> <span id="goal"></span></p>
+  </div>
+
+  <!-- نمایش تاریخچه گفتگو -->
+  <div class="card" id="history">
+    <h2>تاریخچه گفتگو</h2>
+    <ul id="history-list"></ul>
+  </div>
+
+  <script>
+    // گرفتن اطلاعات کاربر
+    fetch('http://localhost:3000/user-info?name=مهدی&goal=کاهش وزن')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('name').innerText = data.name;
+        document.getElementById('goal').innerText = data.goal;
+      });
+
+    // گرفتن تاریخچه گفتگو
+    fetch('http://localhost:3000/history')
+      .then(response => response.json())
+      .then(data => {
+        const historyList = document.getElementById('history-list');
+        data.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.innerText = `پیام کاربر: ${item.messages[0].message} - پاسخ مشاور: ${item.messages[1].message}`;
+          historyList.appendChild(listItem);
+        });
+      });
+  </script>
+</body>
+</html>
